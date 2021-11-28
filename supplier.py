@@ -19,74 +19,46 @@ class supplierClass:
         self.var_searchtxt=StringVar()
 
 
-        self.var_emp_id=StringVar()
-        self.var_gender=StringVar()
-        self.var_contact=StringVar()
+        self.var_sup_invoice=StringVar()
         self.var_name=StringVar()
-        self.var_dob=StringVar()
-        self.var_doj=StringVar()
-        self.var_email=StringVar()
-        self.var_pass=StringVar()
-        self.var_utype=StringVar()
-        #self.var_address=StringVar()
-        self.var_salary=StringVar()
+        self.var_contact=StringVar()
+        
+        
+        
 
         
         #=====search Fram=======#
-        SearchFrame=LabelFrame(self.root,text="Search Employee",bd=2,font=("goudy old style",12,"bold"),bg="white")
+        SearchFrame=LabelFrame(self.root,text="Search Invoice",bd=2,font=("goudy old style",12,"bold"),bg="white")
         SearchFrame.place(x=250,y=20,width=600,height=70)
 
         #=====Options=====#
-        cmb_search=ttk.Combobox(SearchFrame,textvariable=self.var_searchby,values=("Select","Email","Name","Contact"))
-        cmb_search.place(x=10,y=10,width=180)
-        cmb_search.current(0)
+        lbl_search=Label(SearchFrame,text="Search By Invoice No.",bg="white", font=("goudy  old style",15))
+        lbl_search.place(x=10,y=10)
+
         txt_search=Entry(SearchFrame,textvariable=self.var_searchtxt,font=("goudy old style",15),bg='lightyellow').place(x=200,y=10)
         btn_search=Button(SearchFrame,text="search", command=self.search,font=("goudy old style",15),bg="#4caf50",fg="white",cursor="hand2").place(x=410,y=10,width=150,height=30)
        
-        #=====employee title=====#
-        title=Label(self.root,text="Employee Details",font=("goudy old style",15),bg='#0f4d7d',fg="white").place(x=50,y=100,width=1000)
+        #=====supplier title=====#
+        title=Label(self.root,text="Supplier Details",font=("goudy old style",15),bg='#0f4d7d',fg="white").place(x=50,y=100,width=1000)
         
         #====Content====
         #===row one=====
-        lbl_empid=Label(self.root,text="Emp ID",font=("goudy old style",15),bg='white').place(x=50,y=150)
-        lbl_gender=Label(self.root,text="Gender",font=("goudy old style",15),bg='white').place(x=350,y=150)
-        lbl_contact=Label(self.root,text="Contact",font=("goudy old style",15),bg='white').place(x=750,y=150)
-
-        txt_empid=Entry(self.root,textvariable=self.var_emp_id,font=("goudy old style",15),bg='lightyellow').place(x=150,y=150,width=180)
+        lbl_supplier_invoice=Label(self.root,text="Invoice No.",font=("goudy old style",15),bg='white').place(x=50,y=150)
+        txt_supplier_invoice=Entry(self.root,textvariable=self.var_sup_invoice,font=("goudy old style",15),bg='lightyellow').place(x=150,y=150,width=180)
         #txt_gender=Entry(self.root,textvariable=self.var_gender,font=("goudy old style",15),bg='white').place(x=500,y=150,width=180)
-        cmb_gender=ttk.Combobox(self.root,textvariable=self.var_gender,values=("Select","Male","Female","Other"),justify=CENTER,font=("goudy old style",15))
-        cmb_gender.place(x=500,y=150,width=180)
-        cmb_gender.current(0)
-        txt_contact=Entry(self.root,textvariable=self.var_contact,font=("goudy old style",15),bg='lightyellow').place(x=850,y=150,width=180)
         
         #====row2=====
-        lbl_name=Label(self.root,text="Emp Name",font=("goudy old style",15),bg='white').place(x=50,y=190)
-        lbl_dob=Label(self.root,text="D.O.B",font=("goudy old style",15),bg='white').place(x=350,y=190)
-        lbl_doj=Label(self.root,text="D.O.J",font=("goudy old style",15),bg='white').place(x=750,y=190)
-
+        lbl_name=Label(self.root,text="Sup Name",font=("goudy old style",15),bg='white').place(x=50,y=190)       
         txt_name=Entry(self.root,textvariable=self.var_name,font=("goudy old style",15),bg='lightyellow').place(x=150,y=190,width=180)
-        txt_dob=Entry(self.root,textvariable=self.var_dob,font=("goudy old style",15),bg='lightyellow').place(x=500,y=190,width=180)
-        txt_doj=Entry(self.root,textvariable=self.var_doj,font=("goudy old style",15),bg='lightyellow').place(x=850,y=190,width=180)
-
+      
         #====row3=====
-        lbl_email=Label(self.root,text="Email",font=("goudy old style",15),bg='white').place(x=50,y=230)
-        lbl_pass=Label(self.root,text="Password",font=("goudy old style",15),bg='white').place(x=350,y=230)
-        lbl_utype=Label(self.root,text="User Type",font=("goudy old style",15),bg='white').place(x=750,y=230)
-
-        txt_email=Entry(self.root,textvariable=self.var_email,font=("goudy old style",15),bg='lightyellow').place(x=150,y=230,width=180)
-        txt_pass=Entry(self.root,textvariable=self.var_pass,font=("goudy old style",15),bg='lightyellow').place(x=500,y=230,width=180)
-        #txt_utype=Entry(self.root,textvariable=self.var_utype,font=("goudy old style",15),bg='lightyellow').place(x=850,y=230,width=180)
-        cmb_utype=ttk.Combobox(self.root,textvariable=self.var_utype,values=("Admin","Employee"),justify=CENTER,font=("goudy old style",15))
-        cmb_utype.place(x=850,y=230,width=180)
-        cmb_utype.current(0)
+        lbl_contact=Label(self.root,text="Contact",font=("goudy old style",15),bg='white').place(x=50,y=230)
+        txt_contact=Entry(self.root,textvariable=self.var_contact,font=("goudy old style",15),bg='lightyellow').place(x=150,y=230,width=180)
         
         #====row4=====
-        lbl_address=Label(self.root,text="Address",font=("goudy old style",15),bg='white').place(x=50,y=270)
-        lbl_salary=Label(self.root,text="Salary",font=("goudy old style",15),bg='white').place(x=500,y=270)
-
-        self.txt_address=Text(self.root,font=("goudy old style",15),bg='lightyellow')
-        self.txt_address.place(x=150,y=270,width=300,height=60)
-        txt_salary=Entry(self.root,textvariable=self.var_salary,font=("goudy old style",15),bg='lightyellow').place(x=600,y=270,width=180)
+        lbl_desc=Label(self.root,text="Description",font=("goudy old style",15),bg='white').place(x=50,y=270)
+        self.txt_desc=Text(self.root,font=("goudy old style",15),bg='lightyellow')
+        self.txt_desc.place(x=150,y=270,width=300,height=60)
         
         #====Buttons====
         btn_add=Button(self.root,text="Save",command=self.add, font=("goudy old style",15),bg="#2196f3",fg="white",cursor="hand2").place(x=500,y=305,width=110,height=28)
@@ -101,71 +73,51 @@ class supplierClass:
         scrolly=Scrollbar(emp_frame,orient=VERTICAL)
         scrollx=Scrollbar(emp_frame,orient=HORIZONTAL)
         
-        self.EmployeeTable=ttk.Treeview(emp_frame,columns=("eid","name","email","gender","contact","dob","doj","pass","utype","address","salary"),yscrollcommand=scrolly.set,xscrollcommand=scrollx.set)
+        self.SupplierTable=ttk.Treeview(emp_frame,columns=("invoice","name","contact","desc"),yscrollcommand=scrolly.set,xscrollcommand=scrollx.set)
         scrollx.pack(side=BOTTOM,fill=X)
         scrolly.pack(side=RIGHT,fill=Y)
-        scrollx.config(command=self.EmployeeTable.xview)
-        scrolly.config(command=self.EmployeeTable.yview)
+        scrollx.config(command=self.SupplierTable.xview)
+        scrolly.config(command=self.SupplierTable.yview)
 
-        self.EmployeeTable.heading("eid",text="EMP ID")
-        self.EmployeeTable.heading("name",text="Name")
-        self.EmployeeTable.heading("email",text="Email")
-        self.EmployeeTable.heading("gender",text="Gender")
-        self.EmployeeTable.heading("contact",text="Contact")
-        self.EmployeeTable.heading("dob",text="DOB")
-        self.EmployeeTable.heading("doj",text="DOJ")
-        self.EmployeeTable.heading("pass",text="Password")
-        self.EmployeeTable.heading("utype",text="Utype")
-        self.EmployeeTable.heading("address",text="Address")
-        self.EmployeeTable.heading("salary",text="Salary")
+        self.SupplierTable.heading("invoice",text="Invoice")
+        self.SupplierTable.heading("name",text="Name")
+        self.SupplierTable.heading("contact",text="Contact")
+        self.SupplierTable.heading("desc",text="Description")
+        self.SupplierTable.heading("contact",text="Contact")
+       
 
-        self.EmployeeTable["show"]="headings"
+        self.SupplierTable["show"]="headings"
 
-        self.EmployeeTable.column("eid",width=90)
-        self.EmployeeTable.column("name",width=100)
-        self.EmployeeTable.column("email",width=100)
-        self.EmployeeTable.column("gender",width=100)
-        self.EmployeeTable.column("contact",width=100)
-        self.EmployeeTable.column("dob",width=100)
-        self.EmployeeTable.column("doj",width=100)
-        self.EmployeeTable.column("pass",width=100)
-        self.EmployeeTable.column("utype",width=100)
-        self.EmployeeTable.column("address",width=100)
-        self.EmployeeTable.column("salary",width=100)
-        self.EmployeeTable.pack(fill=BOTH,expand=1)
-        self.EmployeeTable.bind("<ButtonRelease-1>",self.get_data)
-        self.show()
+        self.SupplierTable.column("invoice",width=90)
+        self.SupplierTable.column("name",width=100)
+        self.SupplierTable.column("contact",width=100)
+        self.SupplierTable.column("desc",width=100)
+        self.SupplierTable.pack(fill=BOTH,expand=1)
+        self.SupplierTable.bind("<ButtonRelease-1>",self.get_data)
+        #self.show()
 #=============================================================
+#
 #or self.var_name.get()==""
     def add(self):
         con=sqlite3.connect(database=r'pos.db')
         cur=con.cursor()
         try:
-            if self.var_emp_id.get()=="": 
-                messagebox.showerror("Error","Employee ID Must Be Required",parent=self.root)
+            if self.var_sup_invoice.get()=="": 
+                messagebox.showerror("Error","Invoice Must Be Required",parent=self.root)
             else:
-                cur.execute("select * from employee where eid=?",(self.var_emp_id.get(),))
+                cur.execute("select * from supplier where invoice=?",(self.var_sup_invoice.get(),))
                 row=cur.fetchone()
                 if row!=None:
-                    messagebox.showerror("Error","This Employee ID already assigned try Different",parent=self.root)
+                    messagebox.showerror("Error","Invoice Number already assigned try Different",parent=self.root)
                 else:
-                    cur.execute("Insert into employee(eid,name,email,gender,contact,dob,doj,pass,utype,address,salary) values (?,?,?,?,?,?,?,?,?,?,?)",(
-                                         self.var_emp_id.get(),
-                                         self.var_name.get(),
-                                         self.var_email.get(),
-                                         self.var_gender.get(),
+                    cur.execute("Insert into supplier(invoice,name,contact,desc) values (?,?,?,?)",(
+                                         self.var_sup_invoice.get(),
+                                         self.var_name.get(),                                       
                                          self.var_contact.get(),
-                                         self.var_dob.get(),
-                                         self.var_doj.get(),
-                                         self.var_pass.get(),
-                                         self.var_utype.get(),
-                                         self.txt_address.get('1.0',END),
-                                         self.var_salary.get(),
-
-
+                                         self.txt_desc.get('1.0',END),
                     ))
                     con.commit()
-                    messagebox.showinfo("Success","Employee Added Successfully",parent=self.root)
+                    messagebox.showinfo("Success","Supplier Added Successfully",parent=self.root)
                     self.show()
            
         except Exception as ex:
@@ -177,11 +129,11 @@ class supplierClass:
         con=sqlite3.connect(database=r'pos.db')
         cur=con.cursor()
         try:
-            cur.execute("select * from employee")
+            cur.execute("select * from supplier")
             rows=cur.fetchall()
-            self.EmployeeTable.delete(*self.EmployeeTable.get_children())
+            self.SupplierTable.delete(*self.SupplierTable.get_children())
             for row in rows:
-                self.EmployeeTable.insert('',END,values=row)
+                self.SupplierTable.insert('',END,values=row)
                                      
         except Exception as ex:
             messagebox.showerror("Error",f"Error Due to : {str(ex)}",parent=self.root)
@@ -191,31 +143,24 @@ class supplierClass:
         con=sqlite3.connect(database=r'pos.db')
         cur=con.cursor()
         try:
-            if self.var_emp_id.get()=="": 
-                messagebox.showerror("Error","Employee ID Must Be Required",parent=self.root)
+            if self.var_sup_invoice.get()=="": 
+                messagebox.showerror("Error","Invoice No. Must Be Required",parent=self.root)
             else:
-                cur.execute("select * from employee where eid=?",(self.var_emp_id.get(),))
+                cur.execute("select * from supplier where invoice=?",(self.var_sup_invoice.get(),))
                 row=cur.fetchone()
                 if row==None:
-                    messagebox.showerror("Error","Invalid Employee ID",parent=self.root)
+                    messagebox.showerror("Error","Invalid Invoice No",parent=self.root)
                 else:
-                    cur.execute("Update employee set name=?,email=?,gender=?,contact=?,dob=?,doj=?,pass=?,utype=?,address=?,salary=? where eid=?",(
-                                         #self.var_emp_id.get(),
+                    cur.execute("Update supplier set name=?,contact=?,desc=? where invoice=?",(
+                                         #self.var_sup_invoice.get(),
                                          self.var_name.get(),
-                                         self.var_email.get(),
-                                         self.var_gender.get(),
                                          self.var_contact.get(),
-                                         self.var_dob.get(),
-                                         self.var_doj.get(),
-                                         self.var_pass.get(),
-                                         self.var_utype.get(),
-                                         self.txt_address.get('1.0',END),
-                                         self.var_salary.get(),
-                                         self.var_emp_id.get(),
+                                         self.txt_desc.get('1.0',END),
+                                         self.var_sup_invoice.get(),
 
                     ))
                     con.commit()
-                    messagebox.showinfo("Success","Employee Updated Successfully",parent=self.root)
+                    messagebox.showinfo("Success","Supplier Updated Successfully",parent=self.root)
                     self.show()
            
         except Exception as ex:
@@ -226,62 +171,48 @@ class supplierClass:
         con=sqlite3.connect(database=r'pos.db')
         cur=con.cursor()
         try:
-            if self.var_emp_id.get()=="": 
-                messagebox.showerror("Error","Employee ID Must Be Required",parent=self.root)
+            if self.var_sup_invoice.get()=="": 
+                messagebox.showerror("Error","Invoice No Must Be Required",parent=self.root)
             else:
-                cur.execute("select * from employee where eid=?",(self.var_emp_id.get(),))
+                cur.execute("select * from supplier where invoice=?",(self.var_sup_invoice.get(),))
                 row=cur.fetchone()
                 if row==None:
-                    messagebox.showerror("Error","Invalid Employee ID",parent=self.root)
+                    messagebox.showerror("Error","Invalid Invoice No",parent=self.root)
                 else:
                     op=messagebox.askyesno("Confirm","Do you really want to delete?", parent=self.root)
                     if op==True:
-                         cur.execute("Delete from employee where eid=?",(self.var_emp_id.get(),))
+                         cur.execute("Delete from supplier where invoice=?",(self.var_sup_invoice.get(),))
                          con.commit()
-                         messagebox.showinfo("Success","Employee Deleted Successfully",parent=self.root)
+                         messagebox.showinfo("Success","Supplier Deleted Successfully",parent=self.root)
                          self.clear()
+                         
 
         except Exception as ex:
             messagebox.showerror("Error",f"Error Due to : {str(ex)}",parent=self.root)
 #=================on click display content inside field===treeview data to field
     def get_data(self, ev):
-              f=self.EmployeeTable.focus()
-              content=(self.EmployeeTable.item(f))
+              f=self.SupplierTable.focus()
+              content=(self.SupplierTable.item(f))
               row=content['values']
               #print(row)
-              self.var_emp_id.set(row[0])
+              self.var_sup_invoice.set(row[0])
               self.var_name.set(row[1])
-              self.var_email.set(row[2])
-              self.var_gender.set(row[3])
-              self.var_contact.set(row[4])
-              self.var_dob.set(row[5])
-              self.var_doj.set(row[6])
-              self.var_pass.set(row[7])
-              self.var_utype.set(row[8])
-              self.txt_address.delete('1.0',END)
-              self.txt_address.insert(END,row[9])
-              self.var_salary.set(row[10])
-              #self.var_emp_id.set(row[11]),
+              self.var_contact.set(row[2])
+              self.txt_desc.delete('1.0',END)
+              self.txt_desc.insert(END,row[3])
+            
 
 
 #=================================
 
     def clear(self):
-              self.var_emp_id.set("")
+              self.var_sup_invoice.set("")
               self.var_name.set("")
-              self.var_email.set("")
-              self.var_gender.set("")
               self.var_contact.set("")
-              self.var_dob.set("")
-              self.var_doj.set("")
-              self.var_pass.set("")
-              self.var_utype.set("Admin")
-              self.txt_address.delete('1.0',END)
-              
-              self.var_salary.set("")
-              #self.var_emp_id.set(row[11]),
+              self.txt_desc.delete('1.0',END)
+              #self.var_sup_invoice.set(row[11]),
               self.var_searchtxt.set("")
-              self.var_searchby.set("Select")
+            
               self.show()
 
 #================search box
@@ -290,17 +221,14 @@ class supplierClass:
         con=sqlite3.connect(database=r'pos.db')
         cur=con.cursor()
         try:
-            if self.var_searchby.get()=="Select":
-                messagebox.showerror("Error","Select Search By Option",parent=self.root)
-            elif self.var_searchby.get()==" ":
-                messagebox.showerror("Error","Search Input Should Be Required",parent=self.root)
+            if self.var_searchtxt.get()==" ":
+                messagebox.showerror("Error","Invoice No.Should Be Required",parent=self.root)
             else:
-             cur.execute("select * from employee where "+self.var_searchby.get()+" LIKE '%"+self.var_searchtxt.get()+"%'")
-             rows=cur.fetchall()
-             if len(rows)!=0:
-                self.EmployeeTable.delete(*self.EmployeeTable.get_children())
-                for row in rows:
-                    self.EmployeeTable.insert('',END,values=row)
+             cur.execute("select * from supplier where invoice=?",(self.var_searchtxt.get(),))
+             row=cur.fetchone()
+             if row!=None:
+                self.SupplierTable.delete(*self.SupplierTable.get_children())
+                self.SupplierTable.insert('',END,values=row)
              else:
                  messagebox.showerror("Error", "No Record Found ", parent=self.root)          
         except Exception as ex:
