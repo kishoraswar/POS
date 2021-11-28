@@ -28,47 +28,47 @@ class supplierClass:
 
         
         #=====search Fram=======#
-        SearchFrame=LabelFrame(self.root,text="Search Invoice",bd=2,font=("goudy old style",12,"bold"),bg="white")
-        SearchFrame.place(x=250,y=20,width=600,height=70)
+        #self.root=LabelFrame(self.root,text="Search Invoice",bd=2,font=("goudy old style",12,"bold"),bg="white")
+        #self.root.place(x=250,y=20,width=600,height=70)
 
         #=====Options=====#
-        lbl_search=Label(SearchFrame,text="Search By Invoice No.",bg="white", font=("goudy  old style",15))
-        lbl_search.place(x=10,y=10)
+        lbl_search=Label(self.root,text="Invoice No.",bg="white", font=("goudy  old style",12))
+        lbl_search.place(x=700,y=80)
 
-        txt_search=Entry(SearchFrame,textvariable=self.var_searchtxt,font=("goudy old style",15),bg='lightyellow').place(x=200,y=10)
-        btn_search=Button(SearchFrame,text="search", command=self.search,font=("goudy old style",15),bg="#4caf50",fg="white",cursor="hand2").place(x=410,y=10,width=150,height=30)
+        txt_search=Entry(self.root,textvariable=self.var_searchtxt,font=("goudy old style",15),bg='lightyellow').place(x=800,y=80, width=150)
+        btn_search=Button(self.root,text="search", command=self.search,font=("goudy old style",15),bg="#4caf50",fg="white",cursor="hand2").place(x=980,y=79,width=100,height=30)
        
         #=====supplier title=====#
-        title=Label(self.root,text="Supplier Details",font=("goudy old style",15),bg='#0f4d7d',fg="white").place(x=50,y=100,width=1000)
+        title=Label(self.root,text="Supplier Details",font=("goudy old style",20, "bold"),bg='#0f4d7d',fg="white").place(x=50,y=10,width=1000, height=40)
         
         #====Content====
         #===row one=====
-        lbl_supplier_invoice=Label(self.root,text="Invoice No.",font=("goudy old style",15),bg='white').place(x=50,y=150)
-        txt_supplier_invoice=Entry(self.root,textvariable=self.var_sup_invoice,font=("goudy old style",15),bg='lightyellow').place(x=150,y=150,width=180)
+        lbl_supplier_invoice=Label(self.root,text="Invoice No.",font=("goudy old style",15),bg='white').place(x=50,y=80)
+        txt_supplier_invoice=Entry(self.root,textvariable=self.var_sup_invoice,font=("goudy old style",15),bg='lightyellow').place(x=180,y=80,width=180)
         #txt_gender=Entry(self.root,textvariable=self.var_gender,font=("goudy old style",15),bg='white').place(x=500,y=150,width=180)
         
         #====row2=====
-        lbl_name=Label(self.root,text="Sup Name",font=("goudy old style",15),bg='white').place(x=50,y=190)       
-        txt_name=Entry(self.root,textvariable=self.var_name,font=("goudy old style",15),bg='lightyellow').place(x=150,y=190,width=180)
+        lbl_name=Label(self.root,text="Sup Name",font=("goudy old style",15),bg='white').place(x=50,y=120)       
+        txt_name=Entry(self.root,textvariable=self.var_name,font=("goudy old style",15),bg='lightyellow').place(x=180,y=120,width=180)
       
         #====row3=====
-        lbl_contact=Label(self.root,text="Contact",font=("goudy old style",15),bg='white').place(x=50,y=230)
-        txt_contact=Entry(self.root,textvariable=self.var_contact,font=("goudy old style",15),bg='lightyellow').place(x=150,y=230,width=180)
+        lbl_contact=Label(self.root,text="Contact",font=("goudy old style",15),bg='white').place(x=50,y=160)
+        txt_contact=Entry(self.root,textvariable=self.var_contact,font=("goudy old style",15),bg='lightyellow').place(x=180,y=160,width=180)
         
         #====row4=====
-        lbl_desc=Label(self.root,text="Description",font=("goudy old style",15),bg='white').place(x=50,y=270)
+        lbl_desc=Label(self.root,text="Description",font=("goudy old style",15),bg='white').place(x=50,y=200)
         self.txt_desc=Text(self.root,font=("goudy old style",15),bg='lightyellow')
-        self.txt_desc.place(x=150,y=270,width=300,height=60)
+        self.txt_desc.place(x=180,y=200,width=470,height=90)
         
         #====Buttons====
-        btn_add=Button(self.root,text="Save",command=self.add, font=("goudy old style",15),bg="#2196f3",fg="white",cursor="hand2").place(x=500,y=305,width=110,height=28)
-        btn_update=Button(self.root,text="Update",command=self.update, font=("goudy old style",15),bg="#4caf50",fg="white",cursor="hand2").place(x=620,y=305,width=110,height=28)
-        btn_delete=Button(self.root,text="Delete",command=self.delete, font=("goudy old style",15),bg="#f44336",fg="white",cursor="hand2").place(x=740,y=305,width=110,height=28)
-        btn_clear=Button(self.root,text="Clear",command=self.clear, font=("goudy old style",15),bg="#607d8b",fg="white",cursor="hand2").place(x=860,y=305,width=110,height=28)
+        btn_add=Button(self.root,text="Save",command=self.add, font=("goudy old style",15),bg="#2196f3",fg="white",cursor="hand2").place(x=180,y=370,width=110,height=35)
+        btn_update=Button(self.root,text="Update",command=self.update, font=("goudy old style",15),bg="#4caf50",fg="white",cursor="hand2").place(x=300,y=370,width=110,height=35)
+        btn_delete=Button(self.root,text="Delete",command=self.delete, font=("goudy old style",15),bg="#f44336",fg="white",cursor="hand2").place(x=420,y=370,width=110,height=35)
+        btn_clear=Button(self.root,text="Clear",command=self.clear, font=("goudy old style",15),bg="#607d8b",fg="white",cursor="hand2").place(x=540,y=370,width=110,height=35)
         
         #====Employee  Details=====
         emp_frame=Frame(self.root,bd=3,relief=RIDGE)
-        emp_frame.place(x=0,y=350,relwidth=1,height=150)
+        emp_frame.place(x=700,y=120,width=380,height=350)
         
         scrolly=Scrollbar(emp_frame,orient=VERTICAL)
         scrollx=Scrollbar(emp_frame,orient=HORIZONTAL)
@@ -79,7 +79,7 @@ class supplierClass:
         scrollx.config(command=self.SupplierTable.xview)
         scrolly.config(command=self.SupplierTable.yview)
 
-        self.SupplierTable.heading("invoice",text="Invoice")
+        self.SupplierTable.heading("invoice",text="Invoice No.")
         self.SupplierTable.heading("name",text="Name")
         self.SupplierTable.heading("contact",text="Contact")
         self.SupplierTable.heading("desc",text="Description")
@@ -94,7 +94,7 @@ class supplierClass:
         self.SupplierTable.column("desc",width=100)
         self.SupplierTable.pack(fill=BOTH,expand=1)
         self.SupplierTable.bind("<ButtonRelease-1>",self.get_data)
-        #self.show()
+        self.show()
 #=============================================================
 #
 #or self.var_name.get()==""

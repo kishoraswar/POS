@@ -2,6 +2,8 @@ from tkinter import*
 from PIL import Image,ImageTk #pip install pillow
 from employee import employeeClass
 from supplier import supplierClass
+from category import categoryClass
+from product import productClass
 
 class pos:
     def __init__(self,root):
@@ -33,8 +35,8 @@ class pos:
         #====mployee button===#
         btn_employee=Button(LeftMenu,text="Employee",command=self.employee,image=self.icon_side, compound=LEFT, padx=5, anchor="w", font=("Times New Roman",20,"bold"),bg="white",bd=3,cursor="hand2").pack(side=TOP,fill=X)
         btn_supplier=Button(LeftMenu,text="Supplier",command=self.supplier,image=self.icon_side, compound=LEFT, padx=5, anchor="w", font=("Times New Roman",20,"bold"),bg="white",bd=3,cursor="hand2").pack(side=TOP,fill=X)
-        btn_category=Button(LeftMenu,text="Category",image=self.icon_side, compound=LEFT, padx=5, anchor="w", font=("Times New Roman",20,"bold"),bg="white",bd=3,cursor="hand2").pack(side=TOP,fill=X)
-        btn_product=Button(LeftMenu,text="Product",image=self.icon_side, compound=LEFT, padx=5, anchor="w", font=("Times New Roman",20,"bold"),bg="white",bd=3,cursor="hand2").pack(side=TOP,fill=X)
+        btn_category=Button(LeftMenu,text="Category",command=self.category,image=self.icon_side, compound=LEFT, padx=5, anchor="w", font=("Times New Roman",20,"bold"),bg="white",bd=3,cursor="hand2").pack(side=TOP,fill=X)
+        btn_product=Button(LeftMenu,text="Product",command=self.product,image=self.icon_side, compound=LEFT, padx=5, anchor="w", font=("Times New Roman",20,"bold"),bg="white",bd=3,cursor="hand2").pack(side=TOP,fill=X)
         btn_sales=Button(LeftMenu,text="Sales",image=self.icon_side, compound=LEFT, padx=5, anchor="w", font=("Times New Roman",20,"bold"),bg="white",bd=3,cursor="hand2").pack(side=TOP,fill=X)
         btn_exit=Button(LeftMenu,text="Exit",image=self.icon_side, compound=LEFT, padx=5, anchor="w", font=("Times New Roman",20,"bold"),bg="white",bd=3,cursor="hand2").pack(side=TOP,fill=X)
         #=====Content====#
@@ -61,8 +63,12 @@ class pos:
     def supplier(self):
         self.new_win=Toplevel(self.root)
         self.new_obj=supplierClass(self.new_win)
-        
-
+    def category(self):
+        self.new_win=Toplevel(self.root)
+        self.new_obj=categoryClass(self.new_win)
+    def product(self):
+        self.new_win=Toplevel(self.root)
+        self.new_obj=productClass(self.new_win)   
 
 
 

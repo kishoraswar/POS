@@ -1,3 +1,5 @@
+#from _typeshed import Self
+from os import stat
 from tkinter import*
 from tkinter import font
 import sqlite3
@@ -5,138 +7,103 @@ from typing import ContextManager
 #from typing_extensions import ParamSpec
 from PIL import Image,ImageTk    #pip install pillow
 from tkinter import ttk,messagebox
-class employeeClass:
+class productClass:
     def __init__(self,root):
         self.root=root
         self.root.geometry("1100x500+220+130") #width*height+x and y axis
         self.root.title("POS | By Kishor Aswar")
         self.root.config(bg="white")
         self.root.focus_force()
-        #======================
-        #All variable
-        
+#================variable==========
         self.var_searchby=StringVar()
         self.var_searchtxt=StringVar()
 
-
-        self.var_emp_id=StringVar()
-        self.var_gender=StringVar()
-        self.var_contact=StringVar()
+        self.var_cat=StringVar()
+        self.var_sup=StringVar()
         self.var_name=StringVar()
-        self.var_dob=StringVar()
-        self.var_doj=StringVar()
-        self.var_email=StringVar()
-        self.var_pass=StringVar()
-        self.var_utype=StringVar()
-        #self.var_address=StringVar()
-        self.var_salary=StringVar()
-
-
+        self.var_price=StringVar()
+        self.var_qty=StringVar()
+        self.var_status=StringVar()
+#===============================
+        product_Frame=Frame(self.root, bd=2,relief=RIDGE,bg="white")
+        product_Frame.place(x=10,y=10,width=450,height=480)
+#============title====
         
-        #=====search Fram=======#
+        title=Label(product_Frame,text="Manage Product Details",font=("goudy old style",18),bg='#0f4d7d',fg="white").pack(side=TOP,fill=X)
+#====================colum12===================
+        lbl_category=Label(product_Frame,text="Category",font=("goudy old style",18),bg='white').place(x=30,y=60)
+        lbl_supplier=Label(product_Frame,text="Supplier",font=("goudy old style",18),bg='white').place(x=30,y=110)
+        lbl_product_name=Label(product_Frame,text="Name",font=("goudy old style",18),bg='white').place(x=30,y=160)
+        lbl_price=Label(product_Frame,text="Price",font=("goudy old style",18),bg='white').place(x=30,y=210)
+        lbl_qty=Label(product_Frame,text="Quantity",font=("goudy old style",18),bg='white').place(x=30,y=260)
+        lbl_status=Label(product_Frame,text="Status",font=("goudy old style",18),bg='white').place(x=30,y=310)
+
+
+#====================column2===================
+        cmb_cat=ttk.Combobox(product_Frame,textvariable=self.var_cat,values=("Select"),state='readonly',justify=CENTER,font=("goudy old style",15))
+        cmb_cat.place(x=150,y=60,width=200)
+        cmb_cat.current(0)
+#====================column2===================
+        cmb_sup=ttk.Combobox(product_Frame,textvariable=self.var_sup,values=("Select"),state='readonly',justify=CENTER,font=("goudy old style",15))
+        cmb_sup.place(x=150,y=110,width=200)
+        cmb_sup.current(0)
+
+        txt_name=Entry(product_Frame,textvariable=self.var_name,font=("goudy old style",15),bg="lightyellow").place(x=150,y=160,width=200)
+        txt_price=Entry(product_Frame,textvariable=self.var_price,font=("goudy old style",15),bg="lightyellow").place(x=150,y=210,width=200)
+        txt_qty=Entry(product_Frame,textvariable=self.var_qty,font=("goudy old style",15),bg="lightyellow").place(x=150,y=260,width=200)
+        cmb_status=ttk.Combobox(product_Frame,textvariable=self.var_status,values=("Active","Inactive"),state='readonly',justify=CENTER,font=("goudy old style",15))
+        cmb_status.place(x=150,y=310,width=200)
+        cmb_status.current(0)     
+
+        btn_add=Button(product_Frame,text="Save",command=self.add, font=("goudy old style",15),bg="#2196f3",fg="white",cursor="hand2").place(x=10,y=400,width=100,height=40)
+        btn_update=Button(product_Frame,text="Update",command=self.update, font=("goudy old style",15),bg="#4caf50",fg="white",cursor="hand2").place(x=120,y=400,width=100,height=40)
+        btn_delete=Button(product_Frame,text="Delete",command=self.delete, font=("goudy old style",15),bg="#f44336",fg="white",cursor="hand2").place(x=230,y=400,width=100,height=40)
+        btn_clear=Button(product_Frame,text="Clear",command=self.clear, font=("goudy old style",15),bg="#607d8b",fg="white",cursor="hand2").place(x=340,y=400,width=100,height=40)
+       
+       #=====search Fram=======#
         SearchFrame=LabelFrame(self.root,text="Search Employee",bd=2,font=("goudy old style",12,"bold"),bg="white")
-        SearchFrame.place(x=250,y=20,width=600,height=70)
+        SearchFrame.place(x=480,y=10,width=600,height=80)
 
         #=====Options=====#
-        cmb_search=ttk.Combobox(SearchFrame,textvariable=self.var_searchby,values=("Select","Email","Name","Contact"))
+        cmb_search=ttk.Combobox(SearchFrame,textvariable=self.var_searchby,values=("Select","Category","Supplier"),state='readonly',justify=CENTER,font=("goudy old style",15))
         cmb_search.place(x=10,y=10,width=180)
         cmb_search.current(0)
         txt_search=Entry(SearchFrame,textvariable=self.var_searchtxt,font=("goudy old style",15),bg='lightyellow').place(x=200,y=10)
         btn_search=Button(SearchFrame,text="search", command=self.search,font=("goudy old style",15),bg="#4caf50",fg="white",cursor="hand2").place(x=410,y=10,width=150,height=30)
-       
-        #=====employee title=====#
-        title=Label(self.root,text="Employee Details",font=("goudy old style",15),bg='#0f4d7d',fg="white").place(x=50,y=100,width=1000)
+#==========product Details
+        prod_frame=Frame(self.root,bd=3,relief=RIDGE)
+        prod_frame.place(x=480,y=100,width=600,height=390)
         
-        #====Content====
-        #===row one=====
-        lbl_empid=Label(self.root,text="Emp ID",font=("goudy old style",15),bg='white').place(x=50,y=150)
-        lbl_gender=Label(self.root,text="Gender",font=("goudy old style",15),bg='white').place(x=350,y=150)
-        lbl_contact=Label(self.root,text="Contact",font=("goudy old style",15),bg='white').place(x=750,y=150)
-
-        txt_empid=Entry(self.root,textvariable=self.var_emp_id,font=("goudy old style",15),bg='lightyellow').place(x=150,y=150,width=180)
-        #txt_gender=Entry(self.root,textvariable=self.var_gender,font=("goudy old style",15),bg='white').place(x=500,y=150,width=180)
-        cmb_gender=ttk.Combobox(self.root,textvariable=self.var_gender,values=("Select","Male","Female","Other"),justify=CENTER,font=("goudy old style",15))
-        cmb_gender.place(x=500,y=150,width=180)
-        cmb_gender.current(0)
-        txt_contact=Entry(self.root,textvariable=self.var_contact,font=("goudy old style",15),bg='lightyellow').place(x=850,y=150,width=180)
+        scrolly=Scrollbar(prod_frame,orient=VERTICAL)
+        scrollx=Scrollbar(prod_frame,orient=HORIZONTAL)
         
-        #====row2=====
-        lbl_name=Label(self.root,text="Emp Name",font=("goudy old style",15),bg='white').place(x=50,y=190)
-        lbl_dob=Label(self.root,text="D.O.B",font=("goudy old style",15),bg='white').place(x=350,y=190)
-        lbl_doj=Label(self.root,text="D.O.J",font=("goudy old style",15),bg='white').place(x=750,y=190)
-
-        txt_name=Entry(self.root,textvariable=self.var_name,font=("goudy old style",15),bg='lightyellow').place(x=150,y=190,width=180)
-        txt_dob=Entry(self.root,textvariable=self.var_dob,font=("goudy old style",15),bg='lightyellow').place(x=500,y=190,width=180)
-        txt_doj=Entry(self.root,textvariable=self.var_doj,font=("goudy old style",15),bg='lightyellow').place(x=850,y=190,width=180)
-
-        #====row3=====
-        lbl_email=Label(self.root,text="Email",font=("goudy old style",15),bg='white').place(x=50,y=230)
-        lbl_pass=Label(self.root,text="Password",font=("goudy old style",15),bg='white').place(x=350,y=230)
-        lbl_utype=Label(self.root,text="User Type",font=("goudy old style",15),bg='white').place(x=750,y=230)
-
-        txt_email=Entry(self.root,textvariable=self.var_email,font=("goudy old style",15),bg='lightyellow').place(x=150,y=230,width=180)
-        txt_pass=Entry(self.root,textvariable=self.var_pass,font=("goudy old style",15),bg='lightyellow').place(x=500,y=230,width=180)
-        #txt_utype=Entry(self.root,textvariable=self.var_utype,font=("goudy old style",15),bg='lightyellow').place(x=850,y=230,width=180)
-        cmb_utype=ttk.Combobox(self.root,textvariable=self.var_utype,values=("Admin","Employee"),justify=CENTER,font=("goudy old style",15))
-        cmb_utype.place(x=850,y=230,width=180)
-        cmb_utype.current(0)
-        
-        #====row4=====
-        lbl_address=Label(self.root,text="Address",font=("goudy old style",15),bg='white').place(x=50,y=270)
-        lbl_salary=Label(self.root,text="Salary",font=("goudy old style",15),bg='white').place(x=500,y=270)
-
-        self.txt_address=Text(self.root,font=("goudy old style",15),bg='lightyellow')
-        self.txt_address.place(x=150,y=270,width=300,height=60)
-        txt_salary=Entry(self.root,textvariable=self.var_salary,font=("goudy old style",15),bg='lightyellow').place(x=600,y=270,width=180)
-        
-        #====Buttons====
-        btn_add=Button(self.root,text="Save",command=self.add, font=("goudy old style",15),bg="#2196f3",fg="white",cursor="hand2").place(x=500,y=305,width=110,height=28)
-        btn_update=Button(self.root,text="Update",command=self.update, font=("goudy old style",15),bg="#4caf50",fg="white",cursor="hand2").place(x=620,y=305,width=110,height=28)
-        btn_delete=Button(self.root,text="Delete",command=self.delete, font=("goudy old style",15),bg="#f44336",fg="white",cursor="hand2").place(x=740,y=305,width=110,height=28)
-        btn_clear=Button(self.root,text="Clear",command=self.clear, font=("goudy old style",15),bg="#607d8b",fg="white",cursor="hand2").place(x=860,y=305,width=110,height=28)
-        
-        #====Employee  Details=====
-        emp_frame=Frame(self.root,bd=3,relief=RIDGE)
-        emp_frame.place(x=0,y=350,relwidth=1,height=150)
-        
-        scrolly=Scrollbar(emp_frame,orient=VERTICAL)
-        scrollx=Scrollbar(emp_frame,orient=HORIZONTAL)
-        
-        self.EmployeeTable=ttk.Treeview(emp_frame,columns=("eid","name","email","gender","contact","dob","doj","pass","utype","address","salary"),yscrollcommand=scrolly.set,xscrollcommand=scrollx.set)
+        self.productTable=ttk.Treeview(prod_frame,columns=("pid","Category","Supplier","name","price","qty","status"),yscrollcommand=scrolly.set,xscrollcommand=scrollx.set)
         scrollx.pack(side=BOTTOM,fill=X)
         scrolly.pack(side=RIGHT,fill=Y)
-        scrollx.config(command=self.EmployeeTable.xview)
-        scrolly.config(command=self.EmployeeTable.yview)
+        scrollx.config(command=self.productTable.xview)
+        scrolly.config(command=self.productTable.yview)
 
-        self.EmployeeTable.heading("eid",text="EMP ID")
-        self.EmployeeTable.heading("name",text="Name")
-        self.EmployeeTable.heading("email",text="Email")
-        self.EmployeeTable.heading("gender",text="Gender")
-        self.EmployeeTable.heading("contact",text="Contact")
-        self.EmployeeTable.heading("dob",text="DOB")
-        self.EmployeeTable.heading("doj",text="DOJ")
-        self.EmployeeTable.heading("pass",text="Password")
-        self.EmployeeTable.heading("utype",text="Utype")
-        self.EmployeeTable.heading("address",text="Address")
-        self.EmployeeTable.heading("salary",text="Salary")
+        self.productTable.heading("pid",text="Product ID")
+        self.productTable.heading("Category",text="Category")
+        self.productTable.heading("Supplier",text="Supplier")
+        self.productTable.heading("name",text="Name")
+        self.productTable.heading("price",text="Price")
+        self.productTable.heading("qty",text="Quantity")
+        self.productTable.heading("status",text="Status")
 
-        self.EmployeeTable["show"]="headings"
+        self.productTable["show"]="headings"
 
-        self.EmployeeTable.column("eid",width=90)
-        self.EmployeeTable.column("name",width=100)
-        self.EmployeeTable.column("email",width=100)
-        self.EmployeeTable.column("gender",width=100)
-        self.EmployeeTable.column("contact",width=100)
-        self.EmployeeTable.column("dob",width=100)
-        self.EmployeeTable.column("doj",width=100)
-        self.EmployeeTable.column("pass",width=100)
-        self.EmployeeTable.column("utype",width=100)
-        self.EmployeeTable.column("address",width=100)
-        self.EmployeeTable.column("salary",width=100)
-        self.EmployeeTable.pack(fill=BOTH,expand=1)
-        self.EmployeeTable.bind("<ButtonRelease-1>",self.get_data)
+        self.productTable.column("pid",width=90)
+        self.productTable.column("Category",width=100)
+        self.productTable.column("Supplier",width=100)
+        self.productTable.column("name",width=100)
+        self.productTable.column("price",width=100)
+        self.productTable.column("qty",width=100)
+        self.productTable.column("status",width=100)       
+        self.productTable.pack(fill=BOTH,expand=1)
+        self.productTable.bind("<ButtonRelease-1>",self.get_data)
         self.show()
-#=============================================================
+
 #or self.var_name.get()==""
     def add(self):
         con=sqlite3.connect(database=r'pos.db')
@@ -180,9 +147,9 @@ class employeeClass:
         try:
             cur.execute("select * from employee")
             rows=cur.fetchall()
-            self.EmployeeTable.delete(*self.EmployeeTable.get_children())
+            self.productTable.delete(*self.productTable.get_children())
             for row in rows:
-                self.EmployeeTable.insert('',END,values=row)
+                self.productTable.insert('',END,values=row)
                                      
         except Exception as ex:
             messagebox.showerror("Error",f"Error Due to : {str(ex)}",parent=self.root)
@@ -246,8 +213,8 @@ class employeeClass:
             messagebox.showerror("Error",f"Error Due to : {str(ex)}",parent=self.root)
 #=================on click display content inside field===treeview data to field
     def get_data(self, ev):
-              f=self.EmployeeTable.focus()
-              content=(self.EmployeeTable.item(f))
+              f=self.productTable.focus()
+              content=(self.productTable.item(f))
               row=content['values']
               #print(row)
               self.var_emp_id.set(row[0])
@@ -299,17 +266,16 @@ class employeeClass:
              cur.execute("select * from employee where "+self.var_searchby.get()+" LIKE '%"+self.var_searchtxt.get()+"%'")
              rows=cur.fetchall()
              if len(rows)!=0:
-                self.EmployeeTable.delete(*self.EmployeeTable.get_children())
+                self.productTable.delete(*self.productTable.get_children())
                 for row in rows:
-                    self.EmployeeTable.insert('',END,values=row)
+                    self.productTable.insert('',END,values=row)
              else:
                  messagebox.showerror("Error", "No Record Found ", parent=self.root)          
         except Exception as ex:
             messagebox.showerror("Error",f"Error Due to : {str(ex)}",parent=self.root)
 
+
 if __name__=="__main__":    
     root=Tk()
-    obj=employeeClass(root)
+    obj=productClass(root)
     root.mainloop()
-
-
