@@ -17,8 +17,12 @@ class productClass:
 #================variable==========
         self.var_searchby=StringVar()
         self.var_searchtxt=StringVar()
-
+        self.cat_list=[]
+        self.sup_list=[]
+        self.fetch_cat_sup()
+        self.var_pid=StringVar()
         self.var_cat=StringVar()
+
         self.var_sup=StringVar()
         self.var_name=StringVar()
         self.var_price=StringVar()
@@ -40,11 +44,11 @@ class productClass:
 
 
 #====================column2===================
-        cmb_cat=ttk.Combobox(product_Frame,textvariable=self.var_cat,values=("Select"),state='readonly',justify=CENTER,font=("goudy old style",15))
+        cmb_cat=ttk.Combobox(product_Frame,textvariable=self.var_cat,values=self.cat_list,state='readonly',justify=CENTER,font=("goudy old style",15))
         cmb_cat.place(x=150,y=60,width=200)
         cmb_cat.current(0)
 #====================column2===================
-        cmb_sup=ttk.Combobox(product_Frame,textvariable=self.var_sup,values=("Select"),state='readonly',justify=CENTER,font=("goudy old style",15))
+        cmb_sup=ttk.Combobox(product_Frame,textvariable=self.var_sup,values=self.sup_list,state='readonly',justify=CENTER,font=("goudy old style",15))
         cmb_sup.place(x=150,y=110,width=200)
         cmb_sup.current(0)
 
@@ -61,7 +65,7 @@ class productClass:
         btn_clear=Button(product_Frame,text="Clear",command=self.clear, font=("goudy old style",15),bg="#607d8b",fg="white",cursor="hand2").place(x=340,y=400,width=100,height=40)
        
        #=====search Fram=======#
-        SearchFrame=LabelFrame(self.root,text="Search Employee",bd=2,font=("goudy old style",12,"bold"),bg="white")
+        SearchFrame=LabelFrame(self.root,text="Search Product",bd=2,font=("goudy old style",12,"bold"),bg="white")
         SearchFrame.place(x=480,y=10,width=600,height=80)
 
         #=====Options=====#
@@ -77,7 +81,7 @@ class productClass:
         scrolly=Scrollbar(prod_frame,orient=VERTICAL)
         scrollx=Scrollbar(prod_frame,orient=HORIZONTAL)
         
-        self.productTable=ttk.Treeview(prod_frame,columns=("pid","Category","Supplier","name","price","qty","status"),yscrollcommand=scrolly.set,xscrollcommand=scrollx.set)
+        self.productTable=ttk.Treeview(prod_frame,columns=("pid","Supplier","Category","name","price","qty","status"),yscrollcommand=scrolly.set,xscrollcommand=scrollx.set)
         scrollx.pack(side=BOTTOM,fill=X)
         scrolly.pack(side=RIGHT,fill=Y)
         scrollx.config(command=self.productTable.xview)
@@ -103,37 +107,58 @@ class productClass:
         self.productTable.pack(fill=BOTH,expand=1)
         self.productTable.bind("<ButtonRelease-1>",self.get_data)
         self.show()
+        self.fetch_cat_sup()
+#=====================
+    def fetch_cat_sup(self):
+        self.cat_list.append("Empty")
+        self.sup_list.append("Empty")
+        con=sqlite3.connect(database=r'pos.db')
+        cur=con.cursor()
+        try:
+             cur.execute("select name from category")
+             cat=cur.fetchall()
+             if len(cat)>0:
+               del self.cat_list[:]
+               self.cat_list.append("Select")
+               for i in cat:
+                  self.cat_list.append(i[0])
+           
+             cur.execute("select name from supplier")
+             sup=cur.fetchall()
+             if len(sup)>0:
+               del self.sup_list[:]
+               self.sup_list.append("Select")
+               for i in sup:
+                  self.sup_list.append(i[0])
+                         
+                                     
+        except Exception as ex:
+            messagebox.showerror("Error",f"Error Due to : {str(ex)}",parent=self.root)
 
+#============
 #or self.var_name.get()==""
     def add(self):
         con=sqlite3.connect(database=r'pos.db')
         cur=con.cursor()
         try:
-            if self.var_emp_id.get()=="": 
-                messagebox.showerror("Error","Employee ID Must Be Required",parent=self.root)
+            if self.var_cat.get()=="Select" or self.var_cat.get()=="Empty" or self.var_sup.get()=="Select" or self.var_name.get()=="": 
+                messagebox.showerror("Error","All Fields are Required",parent=self.root)
             else:
-                cur.execute("select * from employee where eid=?",(self.var_emp_id.get(),))
+                cur.execute("select * from product where name=?",(self.var_name.get(),))
                 row=cur.fetchone()
                 if row!=None:
-                    messagebox.showerror("Error","This Employee ID already assigned try Different",parent=self.root)
+                    messagebox.showerror("Error","Product already present, try different",parent=self.root)
                 else:
-                    cur.execute("Insert into employee(eid,name,email,gender,contact,dob,doj,pass,utype,address,salary) values (?,?,?,?,?,?,?,?,?,?,?)",(
-                                         self.var_emp_id.get(),
+                    cur.execute("Insert into product(Category,Supplier,name,price,qty,status) values (?,?,?,?,?,?)",(
+                                         self.var_cat.get(),
+                                         self.var_sup.get(),
                                          self.var_name.get(),
-                                         self.var_email.get(),
-                                         self.var_gender.get(),
-                                         self.var_contact.get(),
-                                         self.var_dob.get(),
-                                         self.var_doj.get(),
-                                         self.var_pass.get(),
-                                         self.var_utype.get(),
-                                         self.txt_address.get('1.0',END),
-                                         self.var_salary.get(),
-
-
+                                         self.var_price.get(),
+                                         self.var_qty.get(),                                        
+                                         self.var_status.get(),
                     ))
                     con.commit()
-                    messagebox.showinfo("Success","Employee Added Successfully",parent=self.root)
+                    messagebox.showinfo("Success","Product Added Successfully",parent=self.root)
                     self.show()
            
         except Exception as ex:
@@ -145,7 +170,7 @@ class productClass:
         con=sqlite3.connect(database=r'pos.db')
         cur=con.cursor()
         try:
-            cur.execute("select * from employee")
+            cur.execute("select * from product")
             rows=cur.fetchall()
             self.productTable.delete(*self.productTable.get_children())
             for row in rows:
@@ -159,31 +184,27 @@ class productClass:
         con=sqlite3.connect(database=r'pos.db')
         cur=con.cursor()
         try:
-            if self.var_emp_id.get()=="": 
-                messagebox.showerror("Error","Employee ID Must Be Required",parent=self.root)
+            if self.var_pid.get()=="": 
+                messagebox.showerror("Error","Please Select Product From List",parent=self.root)
             else:
-                cur.execute("select * from employee where eid=?",(self.var_emp_id.get(),))
+                cur.execute("select * from product  where pid=?",(self.var_pid.get(),))
                 row=cur.fetchone()
                 if row==None:
-                    messagebox.showerror("Error","Invalid Employee ID",parent=self.root)
+                    messagebox.showerror("Error","Invalid Product ID",parent=self.root)
                 else:
-                    cur.execute("Update employee set name=?,email=?,gender=?,contact=?,dob=?,doj=?,pass=?,utype=?,address=?,salary=? where eid=?",(
+                    cur.execute("Update product set Category=?,Supplier=?,name=?,price=?,qty=?,status=? where pid=?",(
                                          #self.var_emp_id.get(),
+                                         self.var_cat.get(),
+                                         self.var_sup.get(),
                                          self.var_name.get(),
-                                         self.var_email.get(),
-                                         self.var_gender.get(),
-                                         self.var_contact.get(),
-                                         self.var_dob.get(),
-                                         self.var_doj.get(),
-                                         self.var_pass.get(),
-                                         self.var_utype.get(),
-                                         self.txt_address.get('1.0',END),
-                                         self.var_salary.get(),
-                                         self.var_emp_id.get(),
+                                         self.var_price.get(),
+                                         self.var_qty.get(),                                        
+                                         self.var_status.get(),
+                                         self.var_pid.get()
 
                     ))
                     con.commit()
-                    messagebox.showinfo("Success","Employee Updated Successfully",parent=self.root)
+                    messagebox.showinfo("Success","Product Updated Successfully",parent=self.root)
                     self.show()
            
         except Exception as ex:
@@ -194,19 +215,19 @@ class productClass:
         con=sqlite3.connect(database=r'pos.db')
         cur=con.cursor()
         try:
-            if self.var_emp_id.get()=="": 
-                messagebox.showerror("Error","Employee ID Must Be Required",parent=self.root)
+            if self.var_pid.get()=="": 
+                messagebox.showerror("Error","Product Must Be Selected",parent=self.root)
             else:
-                cur.execute("select * from employee where eid=?",(self.var_emp_id.get(),))
+                cur.execute("select * from product where pid=?",(self.var_pid.get(),))
                 row=cur.fetchone()
                 if row==None:
-                    messagebox.showerror("Error","Invalid Employee ID",parent=self.root)
+                    messagebox.showerror("Error","Invalid Product ID",parent=self.root)
                 else:
                     op=messagebox.askyesno("Confirm","Do you really want to delete?", parent=self.root)
                     if op==True:
-                         cur.execute("Delete from employee where eid=?",(self.var_emp_id.get(),))
+                         cur.execute("Delete from product where pid=?",(self.var_pid.get(),))
                          con.commit()
-                         messagebox.showinfo("Success","Employee Deleted Successfully",parent=self.root)
+                         messagebox.showinfo("Success","Product Deleted Successfully",parent=self.root)
                          self.clear()
 
         except Exception as ex:
@@ -217,39 +238,29 @@ class productClass:
               content=(self.productTable.item(f))
               row=content['values']
               #print(row)
-              self.var_emp_id.set(row[0])
-              self.var_name.set(row[1])
-              self.var_email.set(row[2])
-              self.var_gender.set(row[3])
-              self.var_contact.set(row[4])
-              self.var_dob.set(row[5])
-              self.var_doj.set(row[6])
-              self.var_pass.set(row[7])
-              self.var_utype.set(row[8])
-              self.txt_address.delete('1.0',END)
-              self.txt_address.insert(END,row[9])
-              self.var_salary.set(row[10])
+              self.var_pid.set(row[0]),
+              self.var_cat.set(row[2]),
+              self.var_sup.set(row[1]),
+              self.var_name.set(row[3]),
+              self.var_price.set(row[4]),
+              self.var_qty.set(row[5]),                                        
+              self.var_status.set(row[6]),
+
               #self.var_emp_id.set(row[11]),
 
 
 #=================================
 
     def clear(self):
-              self.var_emp_id.set("")
-              self.var_name.set("")
-              self.var_email.set("")
-              self.var_gender.set("")
-              self.var_contact.set("")
-              self.var_dob.set("")
-              self.var_doj.set("")
-              self.var_pass.set("")
-              self.var_utype.set("Admin")
-              self.txt_address.delete('1.0',END)
-              
-              self.var_salary.set("")
-              #self.var_emp_id.set(row[11]),
-              self.var_searchtxt.set("")
-              self.var_searchby.set("Select")
+              self.var_cat.set("Select"),
+              self.var_sup.set("Select"),
+              self.var_name.set(""),
+              self.var_price.set(""),
+              self.var_qty.set(""),                                        
+              self.var_status.set("Active"),
+              self.var_pid.set(""),
+              self.var_searchby.set("Select"),
+              self.var_searchtxt.set(""),
               self.show()
 
 #================search box
@@ -263,7 +274,7 @@ class productClass:
             elif self.var_searchby.get()==" ":
                 messagebox.showerror("Error","Search Input Should Be Required",parent=self.root)
             else:
-             cur.execute("select * from employee where "+self.var_searchby.get()+" LIKE '%"+self.var_searchtxt.get()+"%'")
+             cur.execute("select * from product where "+self.var_searchby.get()+" LIKE '%"+self.var_searchtxt.get()+"%'")
              rows=cur.fetchall()
              if len(rows)!=0:
                 self.productTable.delete(*self.productTable.get_children())
