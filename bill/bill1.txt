@@ -1,0 +1,10 @@
+   def search(self):
+        if self.var_invoice.get()=="":
+            messagebox.showerror("Error","Invoice No.Should Be Required")
+        else:
+            if self.var_invoice.get() in self.bill_list:
+                      fp=open(f'bill/{self.var_invoice.get()}.txt','r')
+                      self.bill_area.delete('1.0',END)
+                      for i in fp:
+                         self.bill_area.insert(END,i)
+                      fp.close()
